@@ -31,6 +31,27 @@ document.querySelectorAll('.stat').forEach((el, index) => {
   setTimeout(() => animateCounter(el), index * 120);
 });
 
+const bindFilter = (btnSelector, itemSelector, attrName, itemTagAttr) => {
+  const buttons = document.querySelectorAll(btnSelector);
+  const items = document.querySelectorAll(itemSelector);
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      buttons.forEach((b) => b.classList.remove('active'));
+      button.classList.add('active');
+
+      const filter = button.dataset[attrName];
+      items.forEach((item) => {
+        const tags = item.dataset[itemTagAttr] || '';
+        const show = filter === 'all' || tags.includes(filter);
+        item.style.display = show ? 'block' : 'none';
+      });
+    });
+  });
+};
+
+bindFilter('.chip', '.timeline-item', 'filter', 'tags');
+bindFilter('.project-chip', '.project-card', 'projectFilter', 'projectTags');
 const filterButtons = document.querySelectorAll('.chip');
 const items = document.querySelectorAll('.timeline-item');
 
