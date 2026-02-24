@@ -52,6 +52,22 @@ const bindFilter = (btnSelector, itemSelector, attrName, itemTagAttr) => {
 
 bindFilter('.chip', '.timeline-item', 'filter', 'tags');
 bindFilter('.project-chip', '.project-card', 'projectFilter', 'projectTags');
+const filterButtons = document.querySelectorAll('.chip');
+const items = document.querySelectorAll('.timeline-item');
+
+filterButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    filterButtons.forEach((b) => b.classList.remove('active'));
+    button.classList.add('active');
+
+    const filter = button.dataset.filter;
+    items.forEach((item) => {
+      const tags = item.dataset.tags;
+      const show = filter === 'all' || tags.includes(filter);
+      item.style.display = show ? 'block' : 'none';
+    });
+  });
+});
 
 const themeToggle = document.getElementById('themeToggle');
 const savedTheme = localStorage.getItem('theme');
@@ -75,6 +91,7 @@ if (heroCard) {
     const y = (event.clientY - rect.top) / rect.height - 0.5;
     heroCard.style.transform = `rotateX(${(-y * 8).toFixed(2)}deg) rotateY(${(x * 8).toFixed(2)}deg)`;
   });
+
   heroCard.addEventListener('mouseleave', () => {
     heroCard.style.transform = 'rotateX(0deg) rotateY(0deg)';
   });
