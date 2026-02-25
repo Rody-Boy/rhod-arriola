@@ -68,16 +68,23 @@ bindFilter('.chip', '.timeline-item', 'filter', 'tags');
 bindFilter('.project-chip', '.project-card', 'projectFilter', 'projectTags');
 
 const themeToggle = document.getElementById('themeToggle');
+
+const applyTheme = (isLight) => {
+  document.documentElement.classList.toggle('theme-light', isLight);
+  document.body.classList.toggle('light', isLight);
+  themeToggle.textContent = isLight ? '🌙' : '☀️';
+  themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+  themeToggle.setAttribute('title', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+};
+
 const savedTheme = localStorage.getItem('theme');
-if (savedTheme === 'light') {
-  document.body.classList.add('light');
-  themeToggle.textContent = '☀️';
-}
+const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+const initialIsLight = savedTheme ? savedTheme === 'light' : prefersLight;
+applyTheme(initialIsLight);
 
 themeToggle.addEventListener('click', () => {
-  document.body.classList.toggle('light');
-  const isLight = document.body.classList.contains('light');
-  themeToggle.textContent = isLight ? '☀️' : '🌙';
+  const isLight = !document.documentElement.classList.contains('theme-light');
+  applyTheme(isLight);
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
 });
 

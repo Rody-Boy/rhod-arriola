@@ -9,7 +9,7 @@
   --shadow: 0 24px 80px rgba(167, 88, 157, 0.34);
 }
 
-body.light {
+body.light, html.theme-light {
   --bg: #f8f1f8;
   --surface: rgba(255, 255, 255, 0.9);
   --text: #2f1730;
